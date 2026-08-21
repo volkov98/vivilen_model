@@ -149,18 +149,8 @@ def _build_feature_set(df, target, feature_mode,
                        use_lab_lags=True,
                        lab_cols=('L', 'a', 'b'),
                        include_target_lags=True,
-                       locked_lag_cols=None):  # ← НОВЫЙ ПАРАМЕТР
-    """
-    locked_lag_cols : dict или None
-        Если передан — используем зафиксированные при обучении колонки
-        вместо пересчёта через _select_top_numeric_features_for_lags.
-        Ожидаемый формат:
-            {
-                'lab_lag_feature_cols':  [...],
-                'auto_lag_feature_cols': [...],
-                'all_lag_feature_cols':  [...],
-            }
-    """
+                       locked_lag_cols=None): 
+    
     if id_cols is None:
         id_cols = []
 
@@ -186,7 +176,7 @@ def _build_feature_set(df, target, feature_mode,
                 # инференс: берём зафиксированный список
                 lab_lag_feature_cols = locked_lag_cols['lab_lag_feature_cols']
             else:
-                # обучение: вычисляем
+                
                 lab_lag_feature_cols = _get_lab_lag_sources(
                     df=work_df, target=target,
                     lab_cols=lab_cols,
@@ -207,7 +197,7 @@ def _build_feature_set(df, target, feature_mode,
             # инференс: берём зафиксированный список
             auto_lag_feature_cols = locked_lag_cols['auto_lag_feature_cols']
         else:
-            # обучение: вычисляем
+            
             auto_lag_feature_cols = _select_top_numeric_features_for_lags(
                 df=work_df, target=target,
                 id_cols=id_cols, top_n=top_num_features_for_lags
@@ -311,8 +301,8 @@ def load_data(data_dir=DATA_DIR):
         )
 
     if len(csv_files) > 1:
-        print(f"  [INFO] Найдено несколько CSV файлов: {csv_files}")
-        print(f"  [INFO] Используем первый: {csv_files[0]}")
+        print(f" Найдено несколько CSV файлов: {csv_files}")
+        print(f" Используем первый: {csv_files[0]}")
 
     csv_path = os.path.join(data_dir, csv_files[0])
     df = pd.read_csv(csv_path)
@@ -350,7 +340,6 @@ def classify_prediction(pred, mae, tgt_min, tgt_max):
             f"но интервал [{lower:.4f}, {upper:.4f}] частично выходит за границы"
         )
 
-
 # Инференс для одного таргета
 # =========================================================
 
@@ -363,13 +352,13 @@ def predict_single_target(df_input, target, model_info):
     lag_periods = model_info['lag_periods']
     rolling_windows = model_info['rolling_windows']
 
-    # ← достаём зафиксированные колонки из pickle
+    # достаём зафиксированные колонки из pickle
     locked_lag_cols = {
         'lab_lag_feature_cols': model_info.get('lab_lag_feature_cols', []),
         'auto_lag_feature_cols': model_info.get('auto_lag_feature_cols', []),
         'all_lag_feature_cols': model_info.get('all_lag_feature_cols', []),
     }
-    # если все три пустые — значит старый pickle без meta, fallback к None
+    
     if not any(locked_lag_cols.values()):
         locked_lag_cols = None
 
@@ -455,7 +444,6 @@ def run_inference(df_input, saved_models):
             }
 
     return results
-
 
 # Запуск
 # =========================================================
