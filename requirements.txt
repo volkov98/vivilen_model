@@ -1,0 +1,5 @@
+numpy==1.24.3
+pandas==2.0.3
+catboost==1.2.8
+scikit-learn==1.4.2
+joblib==1.4.2
