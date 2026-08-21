@@ -4,9 +4,9 @@ import re
 import numpy as np
 import pandas as pd
 
-BASE_DIR = ''  # заменить на реальный путь
-MODELS_DIR = os.path.join(BASE_DIR, '')  # заменить на реальный путь
-DATA_DIR = os.path.join(BASE_DIR, '')  # заменить на реальный путь
+BASE_DIR = 'data/input.csv'  # заменить на реальный путь при необходимости
+MODELS_DIR = os.path.join(BASE_DIR, '')  # заменить на реальный путь при необходимости
+DATA_DIR = os.path.join(BASE_DIR, '')  # заменить на реальный путь при необходимости
 
 L_MIN, L_MAX = 79.5, 100.0
 A_MIN, A_MAX = -1.0, -0.2
